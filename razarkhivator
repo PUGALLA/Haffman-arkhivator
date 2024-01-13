@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+struct Tree{
+    int left, right, parent;
+    int bukva;
+
+};
+Tree tree [512];
+
+int main()
+{
+    FILE *f;
+    FILE *g;
+    int nuli;
+    int size_tree;
+    f = fopen("output.haff", "rb");
+    g = fopen("razoutput.haff", "wb");
+    freopen("razoutput.haff", "w", stdout);
+    fscanf(f, "%d", &nuli);
+    fscanf(f, "%d", &size_tree);
+    for (int i = 0; i < size_tree; i++) {
+        fscanf(f, "%d", &tree[i].left);
+        fscanf(f, "%d", &tree[i].right);
+        fscanf(f, "%d", &tree[i].parent);
+        fscanf(f, "%d", &tree[i].bukva);
+
+    }
+    size_tree--;
+    unsigned char ch;
+    fscanf(f, "*");
+    int pos = size_tree;
+    unsigned char maska = 128;
+
+    while (fscanf(f, "%c", &ch) != -1) {
+        maska = 128;
+        for (int i = 0; i < 8; i++) {
+            if ((ch & maska) == maska) {
+                pos = tree[pos].right;
+                if (tree[pos].right == -1 && tree[pos].left == -1) {
+                    char x = tree[pos].bukva;
+                    cout << x;
+                    pos = size_tree;
+                }
+            } else {
+                pos = tree[pos].left;
+                if (tree[pos].right == -1 && tree[pos].left == -1) {
+                    char x = tree[pos].bukva;
+                    cout << x;
+                    pos = size_tree;
+                }
+            }
+            maska = maska >> 1;
+        }
+
+    }
+    return 0;
+}
